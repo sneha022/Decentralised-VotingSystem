@@ -38,7 +38,8 @@ function StudentLogin() {
       });
       if (res.data.success) {
         alert('OTP verified successfully!');
-        navigate('/vote'); // change this to your desired route
+        // After OTP verification, navigate to the vote page
+        navigate('/vote');
       } else {
         alert('Invalid OTP. Please try again.');
       }

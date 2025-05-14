@@ -18,7 +18,8 @@ function StudentLogin() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/send-otp', {
+      // Corrected the URL to match the backend route for sending OTP
+      const res = await axios.post('http://localhost:5000/otp/send-otp', {
         email,
         studentId,
       });
@@ -32,7 +33,8 @@ function StudentLogin() {
 
   const verifyOtp = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/verify-otp', {
+      // Corrected the URL to match the backend route for verifying OTP
+      const res = await axios.post('http://localhost:5000/otp/verify-otp', {
         email,
         otp,
       });

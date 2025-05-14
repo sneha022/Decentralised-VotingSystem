@@ -15,6 +15,7 @@
     "express": "^5.1.0",
     "mongodb": "^6.16.0",
     "mongoose": "^8.13.3",
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "react-router-dom": "^7.5.3"
   }
 }

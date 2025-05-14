@@ -11,6 +11,7 @@
     "react-global-configuration": "^1.4.1",
     "recharts": "^2.15.3",
     "solc": "^0.8.29",
-    "web3": "^4.16.0"
+    "web3": "^4.16.0",
+    "tough-cookie": "^4.1.3"
   }
 }

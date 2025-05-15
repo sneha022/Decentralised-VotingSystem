@@ -1,4 +1,4 @@
-const Nominee = require('../models/nominee');
+const Nominee = require('../models/nominees');
 
 const getResults = async (req, res) => {
   try {

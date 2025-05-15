@@ -9,6 +9,7 @@ function StudentLogin() {
   const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
+  const [loading, setLoading] = useState(false);  // For loading state
   const navigate = useNavigate();
 
   const sendOtp = async () => {
@@ -17,37 +18,44 @@ function StudentLogin() {
       return;
     }
 
+    setLoading(true);  // Show loading indicator
     try {
-      // Corrected the URL to match the backend route for sending OTP
-      const res = await axios.post('http://localhost:5000/otp/send-otp', {
+      const res = await axios.post('http://localhost:5000/api/otp/send-otp', {
         email,
         studentId,
       });
       setMessage(res.data.message);
-      setShowOtpInput(true); // Show OTP input
+      setShowOtpInput(true);
     } catch (err) {
       console.error('Error sending OTP:', err.response || err.message);
-      alert('Error sending OTP');
+      alert('Error sending OTP. Please try again.');
+    } finally {
+      setLoading(false);  // Hide loading indicator
     }
   };
 
   const verifyOtp = async () => {
+    setLoading(true);  // Show loading indicator
     try {
-      // Corrected the URL to match the backend route for verifying OTP
-      const res = await axios.post('http://localhost:5000/otp/verify-otp', {
+      const res = await axios.post('http://localhost:5000/api/otp/verify-otp', {
         email,
         otp,
       });
+
       if (res.data.success) {
         alert('OTP verified successfully!');
-        // After OTP verification, navigate to the vote page
+        // ✅ Store credentials in localStorage
+        localStorage.setItem('email', email);
+        localStorage.setItem('studentId', studentId);
         navigate('/vote');
       } else {
         alert('Invalid OTP. Please try again.');
       }
     } catch (err) {
       console.error('OTP verification error:', err.response || err.message);
-      alert('Error verifying OTP');
+      alert('Error verifying OTP. Please try again.');
+    } finally {
+      setLoading(false);  // Hide loading indicator
     }
   };
 
@@ -86,8 +94,8 @@ function StudentLogin() {
         </div>
 
         {!showOtpInput && (
-          <button className="submit-btn" onClick={sendOtp}>
-            Send OTP
+          <button className="submit-btn" onClick={sendOtp} disabled={loading}>
+            {loading ? 'Sending OTP...' : 'Send OTP'}
           </button>
         )}
 
@@ -103,8 +111,8 @@ function StudentLogin() {
                 required
               />
             </div>
-            <button className="submit-btn" onClick={verifyOtp}>
-              Verify OTP
+            <button className="submit-btn" onClick={verifyOtp} disabled={loading}>
+              {loading ? 'Verifying OTP...' : 'Verify OTP'}
             </button>
           </>
         )}

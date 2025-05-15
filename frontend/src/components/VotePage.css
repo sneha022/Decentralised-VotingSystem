@@ -1,0 +1,115 @@
+/* Container */
+.vote-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fefefe;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  color: #333;
+}
+
+/* Quote */
+.vote-quote {
+  font-style: italic;
+  color: #005f73;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+/* Title */
+.vote-title {
+  color: #0a9396;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+/* Message */
+.vote-message {
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #ae2012;
+}
+
+/* Nominee list - horizontal layout */
+.nominee-list-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+/* Nominee card */
+.nominee-card {
+  background-color: #79e8f7;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(10, 147, 150, 0.2);
+  padding: 20px 18px;
+  width: 250px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.nominee-card:hover {
+  transform: translateY(-5px);
+  border-color: #dfd4ce;
+}
+
+/* Label details */
+.nominee-detail {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* Input radio styling */
+.nominee-card input[type="radio"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* Pointer only if not disabled */
+.nominee-card input[type="radio"]:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Buttons container */
+.vote-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Buttons styles */
+.vote-btn, .analysis-btn {
+  background-color: #e60859;
+  border: none;
+  color: #fefefe;
+  font-weight: 600;
+  padding: 12px 28px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.vote-btn:disabled,
+.analysis-btn:disabled {
+  background-color: #9504e9;
+  cursor: not-allowed;
+}
+
+.vote-btn:not(:disabled),
+.analysis-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.vote-btn:hover:not(:disabled),
+.analysis-btn:hover:not(:disabled) {
+  background-color: #005f73;
+}

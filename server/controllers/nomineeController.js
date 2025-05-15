@@ -1,12 +1,25 @@
-const Nominee = require('../models/nominee');
+const express = require('express');
+const Nominee = require('../models/nominees');
+const router = express.Router();
 
-const getNominees = async (req, res) => {
+// Add nominee
+router.post('/addNominee', async (req, res) => {
+  const { nomineeName, year, branch, role } = req.body;
+
+  const nominee = new Nominee({
+    nomineeName,
+    year,
+    branch,
+    role,
+  });
+
   try {
-    const nominees = await Nominee.find();
-    res.json(nominees);
-  } catch (error) {
-    res.status(500).send('Error fetching nominees');
+    await nominee.save();
+    res.status(200).json({ success: true, message: 'Nominee added successfully!' });
+  } catch (err) {
+    console.error('Error adding nominee:', err);
+    res.status(500).json({ success: false, message: 'Error adding nominee.' });
   }
-};
+});
 
-module.exports = { getNominees };
+module.exports = router;

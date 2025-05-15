@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: String,
-  otpVerified: Boolean,
+  email: { type: String, required: true },
+  studentId: { type: String, required: true },
   hasVoted: { type: Boolean, default: false },
-  votedFor: mongoose.Schema.Types.ObjectId, // Reference to the nominee
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

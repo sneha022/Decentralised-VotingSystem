@@ -3,13 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WelcomePage from './components/WelcomePage';
 import StudentLogin from './components/StudentLogin';
 import StudentNomination from './components/StudentNomination';
+import VotePage from './components/VotePage'; // ✅ Add this import
 
 const App = () => {
-  const [selectedRole, setSelectedRole] = useState(null); // State to store selected role for voting
-
-  const handleViewPolling = (role) => {
-    setSelectedRole(role); // Set selected role for polling view
-  };
+  const [selectedRole, setSelectedRole] = useState(null);
 
   return (
     <Router>
@@ -17,7 +14,7 @@ const App = () => {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/login" element={<StudentLogin />} />
         <Route path="/nominations" element={<StudentNomination />} />
-        {/* Removed VotePage route */}
+        <Route path="/vote" element={<VotePage />} /> {/* ✅ New route */}
       </Routes>
     </Router>
   );

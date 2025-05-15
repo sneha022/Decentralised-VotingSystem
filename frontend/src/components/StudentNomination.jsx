@@ -8,24 +8,39 @@ const StudentNomination = () => {
   const [year, setYear] = useState('');
   const [branch, setBranch] = useState('');
   const [role, setRole] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const [isSubmitted, setIsSubmitted] = useState(false); // To track submission status
+  const [error, setError] = useState(null); // For error handling
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // Handle form submission and nominee data posting
+  const handleNomineeSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form fields
+    if (!nomineeName || !year || !branch || !role) {
+      alert('All fields are required!');
+      return;
+    }
+
+    const nomineeData = {
+      nomineeName,
+      year,
+      branch,
+      role,
+    };
+
     try {
-      const res = await axios.post('http://localhost:5000/submit-nomination', {
-        nomineeName,
-        year,
-        branch,
-        role,
-      });
+      const res = await axios.post('http://localhost:5000/api/nominee/addNominee', nomineeData);
+
       if (res.data.success) {
-        setIsSubmitted(true);
+        alert('Nominee added successfully!');
+        setIsSubmitted(true);  // Mark as submitted
+      } else {
+        alert('Error adding nominee.');
       }
     } catch (err) {
-      console.error('Error submitting nomination', err);
+      console.error('Error submitting nominee:', err);
+      setError('Error submitting nominee, please try again later.');
     }
   };
 
@@ -33,7 +48,7 @@ const StudentNomination = () => {
     <div className="nomination-container">
       <div className="form-container">
         <h2>Nominate Yourself</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleNomineeSubmit}>
           <div className="input-field">
             <label htmlFor="nomineeName">Name of Nominee</label>
             <input
@@ -88,14 +103,11 @@ const StudentNomination = () => {
           </div>
         )}
 
-        <div className="navigation-buttons">
-          <button className="nav-btn back-btn" onClick={() => navigate('/welcome')}>
-            ⬅️ Back
-          </button>
-          <button className="nav-btn next-btn" onClick={() => navigate('/roles-applied')}>
-            Next ➡️
-          </button>
-        </div>
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-// models/nominee.js
+// models/nominees.js
 const mongoose = require('mongoose');
 
 const nomineeSchema = new mongoose.Schema({
@@ -6,9 +6,7 @@ const nomineeSchema = new mongoose.Schema({
   year: { type: String, required: true },
   branch: { type: String, required: true },
   role: { type: String, required: true },
-  voteCount: { type: Number, default: 0 },  // 👈 NEW: vote count field
+  voteCount: { type: Number, default: 0 } // ✅ This is needed
 });
 
-const Nominee = mongoose.model('Nominee', nomineeSchema);
-
-module.exports = Nominee;
+module.exports = mongoose.model('Nominee', nomineeSchema);

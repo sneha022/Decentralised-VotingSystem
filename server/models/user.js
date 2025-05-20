@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  studentId: { type: String, required: true },
-  hasVoted: { type: Boolean, default: false },
+  email: String,
+  studentId: String,
+  votedRoles: {
+    type: Map,
+    of: String, // nomineeId
+    default: {},
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

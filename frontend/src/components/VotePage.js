@@ -1,4 +1,3 @@
-// VotePage.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +24,7 @@ function VotePage() {
     const fetchNominees = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/nominee/allNominees');
-        if (res.data && Array.isArray(res.data)) {
+        if (Array.isArray(res.data)) {
           setNominees(res.data);
         } else {
           setMessage('No nominees found.');
@@ -61,7 +60,6 @@ function VotePage() {
   const handleVote = async () => {
     const roles = Object.keys(nomineesByRole);
 
-    // Validation
     for (const role of roles) {
       if (!selectedNominees[role]) {
         alert(`Please select a nominee for the role: ${role}`);
@@ -76,21 +74,14 @@ function VotePage() {
     try {
       for (const role of roles) {
         const nomineeId = selectedNominees[role];
-        const votePayload = {
-          email,
-          studentId,
-          nomineeId,
-          role,
-        };
+        const votePayload = { email, studentId, nomineeId, role };
 
         const res = await axios.post('http://localhost:5000/api/nominee/vote', votePayload);
-
         if (!res.data.success) {
           throw new Error(`Failed to vote for ${role}`);
         }
       }
 
-      // Update voted roles
       const updatedVotedRoles = { ...hasVotedRoles };
       roles.forEach((role) => {
         updatedVotedRoles[role] = true;

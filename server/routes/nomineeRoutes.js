@@ -1,4 +1,3 @@
-// routes/nomineeRoutes.js
 const express = require('express');
 const mongoose = require('mongoose');
 const Nominee = require('../models/nominees');
@@ -54,6 +53,26 @@ router.post('/vote', async (req, res) => {
   } catch (error) {
     console.error('Error recording votes:', error);
     res.status(500).json({ success: false, message: 'Error recording votes' });
+  }
+});
+
+// 🔍 Vote analysis by role
+router.get('/voteAnalysis', async (req, res) => {
+  try {
+    const results = await Nominee.aggregate([
+      {
+        $group: {
+          _id: { role: "$role", nomineeName: "$nomineeName" },
+          totalVotes: { $sum: "$voteCount" }
+        }
+      },
+      { $sort: { "_id.role": 1, totalVotes: -1 } }
+    ]);
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Error fetching vote analysis:', error);
+    res.status(500).json({ success: false, message: 'Error fetching vote analysis' });
   }
 });
 

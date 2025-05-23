@@ -43,6 +43,12 @@ function VotePage() {
     return acc;
   }, {});
 
+  // Add all roles here including Treasurer
+  const allRoles = ['President', 'Vice President', 'Secretary', 'Joint Secretary', 'Treasurer'];
+
+  // Map over allRoles to maintain order and include empty arrays if no nominees
+  const sortedNomineesByRole = allRoles.map(role => [role, nomineesByRole[role] || []]);
+
   useEffect(() => {
     const votedRolesJSON = localStorage.getItem(`hasVotedRoles_${studentId}`);
     if (votedRolesJSON) {
@@ -58,7 +64,7 @@ function VotePage() {
   };
 
   const handleVote = async () => {
-    const roles = Object.keys(nomineesByRole);
+    const roles = allRoles;
 
     for (const role of roles) {
       if (!selectedNominees[role]) {
@@ -96,60 +102,69 @@ function VotePage() {
     }
   };
 
-  return (
-    <div className="vote-container">
-      <h1 className="vote-quote">
-        🗳️ "Voting is the expression of our commitment to ourselves, one another, this country, and this world."
-      </h1>
-      <h2 className="vote-title">Cast Your Vote for a Better Tomorrow</h2>
+  // Wrap roles in a div with some padding and overflow control
 
-      {message && <p className="vote-message">{message}</p>}
+return (
+  <div className="vote-container">
+    <h1 className="vote-quote">
+      🗳️ "Voting is the expression of our commitment to ourselves, one another, this country, and this world."
+    </h1>
+    <h2 className="vote-title">Cast Your Vote for a Better Tomorrow</h2>
 
-      {Object.entries(nomineesByRole).map(([role, nominees]) => (
+    {message && <p className="vote-message">{message}</p>}
+
+    <div style={{ maxHeight: 'calc(100vh - 250px)', overflowY: 'auto', paddingRight: '8px' }}>
+      {sortedNomineesByRole.map(([role, nominees]) => (
         <div key={role} className="role-section">
           <h3>{role}</h3>
           <div className="nominee-list-horizontal">
-            {nominees.map((nominee) => (
-              <div key={nominee._id} className="nominee-card">
-                <input
-                  type="radio"
-                  id={`${role}-${nominee._id}`}
-                  name={role}
-                  value={nominee._id}
-                  onChange={() => handleSelectNominee(role, nominee._id)}
-                  disabled={hasVotedRoles[role]}
-                  checked={selectedNominees[role] === nominee._id}
-                />
-                <label htmlFor={`${role}-${nominee._id}`}>
-                  <strong>{nominee.nomineeName}</strong><br />
-                  <span className="nominee-detail">Year: {nominee.year}</span><br />
-                  <span className="nominee-detail">Branch: {nominee.branch}</span>
-                </label>
-              </div>
-            ))}
+            {nominees.length > 0 ? (
+              nominees.map((nominee) => (
+                <div key={nominee._id} className="nominee-card">
+                  <input
+                    type="radio"
+                    id={`${role}-${nominee._id}`}
+                    name={role}
+                    value={nominee._id}
+                    onChange={() => handleSelectNominee(role, nominee._id)}
+                    disabled={hasVotedRoles[role]}
+                    checked={selectedNominees[role] === nominee._id}
+                  />
+                  <label htmlFor={`${role}-${nominee._id}`}>
+                    <strong>{nominee.nomineeName}</strong><br />
+                    <span className="nominee-detail">Year: {nominee.year}</span><br />
+                    <span className="nominee-detail">Branch: {nominee.branch}</span>
+                  </label>
+                </div>
+              ))
+            ) : (
+              <p className="no-nominees-msg">No nominees available for this role.</p>
+            )}
           </div>
         </div>
       ))}
-
-      <div className="vote-buttons">
-        <button
-          className="vote-btn"
-          onClick={handleVote}
-          disabled={Object.keys(hasVotedRoles).length === Object.keys(nomineesByRole).length}
-        >
-          Submit Votes
-        </button>
-
-        <button
-          className="vote-btn view-analysis-btn"
-          onClick={() => navigate('/analysis')}
-          style={{ marginLeft: '10px' }}
-        >
-          View Analysis
-        </button>
-      </div>
     </div>
-  );
+
+    <div className="vote-buttons">
+      <button
+        className="vote-btn"
+        onClick={handleVote}
+        disabled={Object.keys(hasVotedRoles).length === allRoles.length}
+      >
+        Submit Votes
+      </button>
+
+      <button
+        className="vote-btn view-analysis-btn"
+        onClick={() => navigate('/analysis')}
+        style={{ marginLeft: '10px' }}
+      >
+        View Analysis
+      </button>
+    </div>
+  </div>
+);
+
 }
 
 export default VotePage;

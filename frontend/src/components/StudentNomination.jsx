@@ -8,15 +8,13 @@ const StudentNomination = () => {
   const [year, setYear] = useState('');
   const [branch, setBranch] = useState('');
   const [role, setRole] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false); // To track submission status
-  const [error, setError] = useState(null); // For error handling
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Handle form submission and nominee data posting
   const handleNomineeSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form fields
     if (!nomineeName || !year || !branch || !role) {
       alert('All fields are required!');
       return;
@@ -34,7 +32,7 @@ const StudentNomination = () => {
 
       if (res.data.success) {
         alert('Nominee added successfully!');
-        setIsSubmitted(true);  // Mark as submitted
+        setIsSubmitted(true);
       } else {
         alert('Error adding nominee.');
       }
@@ -56,29 +54,46 @@ const StudentNomination = () => {
               id="nomineeName"
               placeholder="Enter nominee's name"
               value={nomineeName}
-              onChange={(e) => setNomineeName(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^[a-zA-Z\s]*$/.test(value)) {
+                  setNomineeName(value);
+                }
+              }}
             />
           </div>
+
           <div className="input-field">
             <label htmlFor="year">Year of Study</label>
-            <input
-              type="text"
+            <select
               id="year"
-              placeholder="Enter your year of study"
               value={year}
               onChange={(e) => setYear(e.target.value)}
-            />
+            >
+              <option value="">Select Year</option>
+              <option value="1st">1st</option>
+              <option value="2nd">2nd</option>
+              <option value="3rd">3rd</option>
+              <option value="4th">4th</option>
+            </select>
           </div>
+
           <div className="input-field">
             <label htmlFor="branch">Branch</label>
-            <input
-              type="text"
+            <select
               id="branch"
-              placeholder="Enter your branch"
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
-            />
+            >
+              <option value="">Select Branch</option>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="AIML">AIML</option>
+            </select>
           </div>
+
           <div className="input-field">
             <label htmlFor="role">Role</label>
             <select
@@ -94,6 +109,7 @@ const StudentNomination = () => {
               <option value="Joint Secretary">Joint Secretary</option>
             </select>
           </div>
+
           <button type="submit" className="submit-btn">Submit Nomination</button>
         </form>
 
